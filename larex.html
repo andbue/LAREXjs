@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>LAREX.js</title>
+    </head>
+    <body>
+      <style>
+        polygon {
+          fill-opacity: 0;
+          stroke-width: 2px;
+        }
+        polygon:hover {
+          fill-opacity: .3;
+        }
+        polygon.marginalia{
+          stroke: rgb(255, 255, 0);
+          fill: rgb(255, 255, 0);
+        }
+        polygon.paragraph {
+          stroke: rgb(255, 0, 0);
+          fill: rgb(255, 0, 0);
+        }
+        polygon.page_number {
+          stroke: rgb(0, 255, 0);
+          fill: rgb(0, 255, 0);
+        }
+        polygon.ImageRegion{
+          stroke: rgb(0, 255, 0);
+          fill: rgb(0, 255, 0);
+        }
+      </style>
+      <h2>LAREX.js Test Page</h2>
+      <p id="status">LAREX.js is loading...</p>
+      <button type="button" id="startbutton">Segment</button>
+      <div>
+        <svg id="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2034 3188" style="width:50%";>
+          <foreignObject width="2034" height="3188">
+          <img id="svgimage" alt="No Image" src="test.png"/>
+        </foreignObject>
+      </svg>
+    </div>
+
+    <script async src="larextest.js"></script>
+  </body>
+</html>
