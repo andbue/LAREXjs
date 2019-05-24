@@ -76,7 +76,16 @@ module.exports = function(regions) {
 
 	this.setReadingOrder = function(readingOrder) {
 		this.readingOrder = readingOrder;
-    }
+	}
+	
+	this.delete = function() {
+		for (region of this.regions){
+			if (region.points != null){
+				region.points.delete();
+				region.points = null;
+			}
+		}
+	}
     
     this.regions = regions;
     this.setReadingOrder([]);

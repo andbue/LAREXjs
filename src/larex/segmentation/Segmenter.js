@@ -99,6 +99,7 @@ module.exports = function(parameters){
 		}
 
 		let texts = ImageSegmentation.detectTextContours(dilate, minSize);
+		dilate.delete();
 
 		return texts;
 	}
@@ -137,7 +138,7 @@ module.exports = function(parameters){
             cnt.delete();
         }
 		
-
+		dilate.delete();
 		return images;
 	}
 
@@ -217,10 +218,21 @@ module.exports = function(parameters){
 
 		binary = ImageProcessor.invertImage(binary);
 		this.binary = binary;
+
+		gray.delete()
+		resized.delete()
 	}
 
 	this.setParameters = function(parameters) {
 		this.parameters = parameters;
+	}
+
+	this.delete = function() {
+		if (this.binary != null){
+			this.binary.delete();
+			this.binary = null;
+		}
+		// remove this.regions
 	}
 
     this.setParameters(parameters);

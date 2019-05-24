@@ -76,7 +76,7 @@ module.exports = function(type, minSize, maxOccurances, priorityPosition, positi
 
 	this.pushPosition = function(position) {
 		this.positions.push(position);
-		this.position.calcPercentages(activeMat);
+		this.position.calcPercentages(this.activeMat);
 		this.calcPositionRects();
 	}
 

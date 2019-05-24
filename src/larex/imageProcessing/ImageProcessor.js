@@ -103,8 +103,12 @@ module.exports.resize = function(source, desiredHeight) {
     // do we need this?
 //}
 
-module.exports.calcCenterOfGravity = function(points) {
-    //Point[] points = input.toArray();
+module.exports.calcCenterOfGravity = function(input) {
+    let points = [];
+    for (i=0; i<input.cols; i+=2){
+        points.push({x: input.data32S[i], y: input.data32S[i+1]})
+    }
+
 
     let sumX = 0;
     let sumY = 0;
@@ -143,8 +147,11 @@ module.exports.releaseAll = function(...mats) {
 }
 
 
-module.exports.calcCenterOfGravityOCV = function(points, forceCogInContour) {
-    //Point[] points = input.toArray();
+module.exports.calcCenterOfGravityOCV = function(input, forceCogInContour) {
+    let points = [];
+    for (i=0; i<input.cols; i+=2){
+        points.push({x: input.data32S[i], y: input.data32S[i+1]})
+    }
 
     let sumX = 0;
     let sumY = 0;
