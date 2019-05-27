@@ -6,6 +6,26 @@
     </head>
     <body>
       <style>
+        html {
+          height: 100%;
+        }
+        body {
+          height: 100%;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+        }
+        #imgBox {
+          background-color: whitesmoke;
+          flex-basis: 100%;
+          overflow: hidden;
+        }
+        #svg {
+          position: relative;
+          height: 60rem;
+          top: 4rem;
+          left: 2rem;
+        }
         polygon {
           fill-opacity: 0;
           stroke-width: 2px;
@@ -30,14 +50,23 @@
           fill: rgb(0, 255, 0);
         }
       </style>
-      <h2>LAREX.js Test Page</h2>
-      <p id="status">LAREX.js is loading...</p>
-      <button type="button" id="startbutton">Segment</button>
       <div>
-        <svg id="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2034 3188" style="width:50%";>
-          <foreignObject width="2034" height="3188">
-          <img id="svgimage" alt="No Image" src="test.png"/>
-        </foreignObject>
+        <h2>LAREX.js Test Page</h2>
+        <p id="status">LAREX.js is loading...</p>
+        <button type="button" id="btnToggleCol">Toggle Colour</button>
+        <button type="button" id="btnSegment">Segment</button>
+      </div>
+      <div id="imgBox">
+        <svg id="svg" viewBox="0 0 2034 3188">
+          <filter id="filterBW" style="color-interpolation-filters:sRGB">
+              <feColorMatrix 
+                  values="0.21  0.72  0.072  0   0
+                          0.21  0.72  0.072  0   0
+                          0.21  0.72  0.072  0   0 
+                          0     0     0      1   0 "/>
+          </filter>
+
+          <image width="2034" height="3188" id="svgimage" href="test.png"></image>
       </svg>
     </div>
 
