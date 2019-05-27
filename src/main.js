@@ -50,7 +50,8 @@ svg.onmousedown = function(e) {
 svg.parentElement.onwheel = function(e) {
     e.preventDefault();
 
-    let scaleFac = 1 + (e.deltaY / 10)
+    let scale = 1 + (e.deltaY / 10)
+        scaleFac = Math.min(Math.max(.6, scale), 1.4)
         svgBCR = svg.getBoundingClientRect()
         edBCR = editor.getBoundingClientRect()
         scaleX = (svgBCR.left - e.clientX) / svgBCR.width
