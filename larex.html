@@ -20,12 +20,64 @@
           flex-basis: 100%;
           overflow: hidden;
         }
+        #svgimage::selection {
+          color: transparent;
+        } 
         #svg {
           position: relative;
-          height: 60rem;
-          top: 4rem;
+          height: calc(100% - 5rem);
+          top: 2rem;
           left: 2rem;
         }
+        #thumbnails {
+          background-color: rgba(0, 0, 0, 0.3);
+          height: 10rem;
+          position: fixed;
+          flex-wrap: nowrap;
+          bottom: 0rem;
+          overflow-x: auto;
+          display: flex;
+          white-space: nowrap;
+          max-width: 100%;
+
+        }
+        #thumbnails:last-child::after {
+          /* margin collapses after last child */
+            content: "\00a0";
+          }
+        #thumbnails > div {
+            width: 5rem;
+            background-color: gray;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin: 1rem;
+            flex: 0 0 auto;
+          
+        }
+        #thumbnails > div:hover {
+          cursor: pointer;        
+        }
+        #thumbnailhandle {
+        position: fixed;
+        margin-left: calc(50% - 2rem);
+        width: 4rem;
+        z-index: 999;
+        height: 2rem;
+        text-align: center;
+        font-size: 3rem;
+        font-weight: bold;
+        opacity: .6;
+        text-shadow: 0 0 5px #000;
+        bottom: 11rem;
+      }
+      #thumbnailhandle:hover {
+        cursor: pointer;
+      }
+      #thumbnailhandle:before{
+        content: "⋯";
+        color: whitesmoke;
+      }
         polygon {
           fill-opacity: 0;
           stroke-width: 2px;
@@ -53,10 +105,14 @@
       <div>
         <h2>LAREX.js Test Page</h2>
         <p id="status">LAREX.js is loading...</p>
+        <input id="iiifAddr" type="text" width="25" value="https://api.digitale-sammlungen.de/iiif/presentation/v2/bsb11222070/manifest">
+        <button type="button" id="btnLoadManifest">Load IIIF Manifest</button>
         <button type="button" id="btnToggleCol">Toggle Colour</button>
         <button type="button" id="btnSegment">Segment</button>
       </div>
-      <div id="imgBox">
+
+
+      <div id="imgBox" ondragstart="return false;" ondrop="return false;">
         <svg id="svg" viewBox="0 0 2034 3188">
           <filter id="filterBW" style="color-interpolation-filters:sRGB">
               <feColorMatrix 
@@ -66,10 +122,24 @@
                           0     0     0      1   0 "/>
           </filter>
 
-          <image width="2034" height="3188" id="svgimage" href="test.png"></image>
-      </svg>
-    </div>
+          <foreignObject id="svgFO" width="2034" height="3188">
+            <xhtml:div>
+            <!-- Firefox does not support crossorigin in svg at the moment -->
+            <img id="svgimage" src="" crossorigin="anonymous"/>
+          </xhtml:div>
+          </foreignObject>
 
+          <g id="svgregions"/>
+          <g id="svglines"/>
+          <!-- <image width="2034" height="3188" id="svgimage" href="test.png"></image> -->
+      </svg>
+
+      <div id="thumbnailhandle"></div>
+      <div id="thumbnails" class="thumbnails" ondragstart="return false;" ondrop="return false;">
+      </div>
+    </div>
+    
+    <script async src="src/manifesto/manifesto.js"></script>
     <script async src="larextest.js"></script>
   </body>
 </html>

@@ -1,11 +1,81 @@
 var test = require('./opencvtest.js');
+
+let svg = document.getElementById("svg");
+let editor = document.getElementById("imgBox");
+let thmb = document.getElementById("thumbnails");
+let thmbh = document.getElementById("thumbnailhandle");
+
+thmb.onwheel = e => {
+    e.preventDefault();
+    e.stopPropagation();
+    //thmb.scrollBy(Math.min(e.deltaY * 5, 15), 0);
+    thmb.scrollBy(e.deltaY * 5, 0);
+
+}
+
+thmbh.onclick = e => {
+    if (thmb.style.bottom == "0rem"){
+        thmb.style.bottom = "-10rem";
+        thmbh.style.bottom = ".5rem";
+    } else {
+        thmb.style.bottom = "0rem";
+        thmbh.style.bottom = "11rem";
+    }
+}
+
+let loadPage = function(sequence, id) {
+    let c = sequence.getCanvasById(id);
+    let imgUrl = c.getCanonicalImageUri();
+    let imgW = c.getWidth();
+    let imgH = c.getHeight();
+    let svgFO = document.getElementById("svgFO");
+    let svgimg = document.getElementById("svgimage");
+    let svgregions = document.getElementById("svgregions");
+    while (svgregions.lastChild) svgregions.removeChild(svgregions.lastChild);
+
+    svg.setAttribute("viewBox", `0 0 ${imgW} ${imgH}`);
+    svgFO.setAttribute("width", imgW);
+    svgFO.setAttribute("height", imgH);
+    svgimg.setAttribute("src", imgUrl);
+
+    svg.style.height = "calc(100% - 5rem)"
+    svg.style.left = ((editor.getBoundingClientRect().width
+                     - svg.getBoundingClientRect().width) / 2  ) + "px";
+    svg.style.top = "2rem";
+}
+
+iiifLoad = function(manifestAddr){
+    manifesto.loadManifest(manifestAddr).then(function(manifest){
+        let m = manifesto.create(manifest);
+        let sequence = m.getSequenceByIndex(0)
+        let canvases = sequence.getCanvases();
+
+        while (thmb.firstChild) {
+            thmb.removeChild(thmb.firstChild);
+        }
+        for (let canvas of canvases){
+            let thmbnail = document.createElement("div");
+            thmbnail.style.backgroundImage = `url(${canvas.getCanonicalImageUri()})`;
+            thmbnail.setAttribute("title", canvas.getDefaultLabel());
+            thmbnail.setAttribute("data-cID", canvas.id)
+            thmbnail.onclick = e => {loadPage(sequence, canvas.id);}
+            thmb.appendChild(thmbnail);
+        }
+
+        loadPage(sequence, canvases[0].id);
+    });
+}
+
+
+
+
 document.getElementById('status').innerHTML = 'LAREX.js is ready.';
 document.getElementById("btnSegment").addEventListener("click", function () {
-    test.opencv("svgimage", "svg");
+    test.opencv("svgimage", "svgregions");
 });
 
 document.getElementById("btnToggleCol").addEventListener("click", function () {
-    let img = document.getElementById("svgimage");
+    let img = document.getElementById("svgFO");
     if (img.getAttribute("filter") === "url(#filterBW)"){
         img.removeAttribute("filter");
     } else {
@@ -13,10 +83,15 @@ document.getElementById("btnToggleCol").addEventListener("click", function () {
     }
 });
 
+document.getElementById("btnLoadManifest").addEventListener("click", function () {
+    iiifLoad(document.getElementById("iiifAddr").value);
+});
 
-let svg = document.getElementById("svg");
-let editor = document.getElementById("imgBox");
+iiifLoad(document.getElementById("iiifAddr").value);
 
+
+
+// dragging the page image
 svg.onmousedown = function(e) {
     e.preventDefault();
     let svgBCR = svg.getBoundingClientRect();
@@ -47,10 +122,11 @@ svg.onmousedown = function(e) {
     editor.addEventListener("mousemove", dragfunc);
 }
 
+// zooming the page image
 svg.parentElement.onwheel = function(e) {
     e.preventDefault();
 
-    let scale = 1 + (e.deltaY / 10)
+    let scale = 1 - (e.deltaY / 10)
         scaleFac = Math.min(Math.max(.6, scale), 1.4)
         svgBCR = svg.getBoundingClientRect()
         edBCR = editor.getBoundingClientRect()
@@ -70,3 +146,5 @@ svg.parentElement.onwheel = function(e) {
         svg.style.top = (startTop + posDiffH) + "px";
     }
 }
+
+

@@ -32,7 +32,7 @@ module.exports = function(parameters){
 		// detect and classify text regionss
         let texts = this.detectText();
 		let results = this.classifyText(texts);
-        
+		
         for (let k=0; k<images.size(); k++){
 			let result = new RegionSegment(new PAGERegionType(RegionType.ImageRegion), images.get(k));
 			results.push(result);
@@ -106,7 +106,7 @@ module.exports = function(parameters){
 
 	this.detectImages = function(imageRegion, type) {
 		if (type == ImageSegType.NONE) {
-			return [];
+			return new cv.MatVector();
 		}
 
 		let dilate = null;
