@@ -14,7 +14,7 @@ thmb.onwheel = e => {
 }
 
 thmbh.onclick = e => {
-    if (thmb.style.bottom == "0rem"){
+    if (thmb.style.bottom != "-10rem"){
         thmb.style.bottom = "-10rem";
         thmbh.style.bottom = ".5rem";
     } else {
